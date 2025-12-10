@@ -21,7 +21,7 @@ MPMOS out in vdd vdd PMOS0P5 w=5u l=0.5u As=7.5p Ad=7.5p ps=13u pd=13u
 *.op
 
 * Transient input (enable during transient test)
-Vin in 0 pulse(0 3.3 0 1p 1p 5n)
+Vin in 0 pulse(0 3.3 0.2n 0.2n 0.2n 5n)
 
 .tran 0.2n 10n
 * Delay measurements (use only for transient)

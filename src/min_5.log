@@ -1,6 +1,6 @@
 LTspice 24.1.10 for Windows
 Circuit: C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\min_5.cir
-Start Time: Tue Dec  9 19:05:41 2025
+Start Time: Wed Dec 10 23:05:44 2025
 solver = Normal
 Maximum thread count: 16
 tnom = 27
@@ -13,11 +13,11 @@ Model "nmos0p5": Oxide thickness thinner than recommended for a level 1 MOSFET.
 Instance "MNMOS": Length shorter than recommended for a level 1 MOSFET.
 Instance "MNMOS": Width narrower than recommended for a level 1 MOSFET.
 Direct Newton iteration for .op point succeeded.
-Total elapsed time: 0.100 seconds.
+Total elapsed time: 0.096 seconds.
 
 Files loaded:
 C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\min_5.cir
 C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\MOSFET_models_0p5_0p18-3.inc
 
-tphl=1.00795853498e-11 FROM 4.99999987792e-13 TO 1.05795853376e-11
-tplh=7.00498745026e-10 FROM 5.00149999999e-09 TO 5.70199874502e-09
+tphl=8.76726781898e-11 FROM 2.99999996955e-10 TO 3.87672675145e-10
+tplh=7.48344827338e-10 FROM 5.49999999711e-09 TO 6.24834482445e-09
