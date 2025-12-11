@@ -1,0 +1,139 @@
+* 3-input parity static CMOS implementation
+* Y = A  B  C  => Y = 1 when odd number of inputs = 1
+* PDN implements Ybar (even parity) = 000 + 011 + 101 + 110
+* Sizes: n = 5u, p = 10u (p = 2*n), L = 0.18u
+
+.include MOSFET_models_0p5_0p18-3.inc
+*****************************************************************************************
+*1n = MNMOS out in 0 0 NMOS0P18 w=0.9u l=0.18u As=0.486p Ad=0.486p ps=2.88u pd=2.88u
+*1p = MPMOS out in vdd vdd PMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+
+
+*2n = MNMOS out in 0 0 NMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+*4n = MNMOS out in 0 0 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+
+*3p = MPMOS out in vdd vdd PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+*****************************************************************************************
+
+* ---------- Inverter subckt (used to generate Abar,Bbar,Cbar) -------------
+* pins: IN OUT VDD GND
+.SUBCKT INV IN OUT VDD GND
+Mp_out OUT IN VDD VDD PMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+Mn_out OUT IN 0 0 NMOS0P18 w=0.9u l=0.18u As=0.486p Ad=0.486p ps=2.88u pd=2.88u
+*W = L * p(or n)
+.ENDS INV
+
+* ----------------- PARITY3 subcircuit (PUN + PDN) -------------------------
+* pins: A B C Y VDD GND
+.SUBCKT PARITY3 A B C Y VDD 0
+
+* generate complements
+XIA A Abar VDD 0 INV
+XIB B Bbar VDD 0 INV
+XIC C Cbar VDD 0 INV
+
+* ---------------- PDN (pull-down) : output Y -> GND when even parity true
+Mn_m8 Y Abar L1 L1 NMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+Mn_m6 Y Bbar L05 L05 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+Mn_m7 Y Cbar L05 L05 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+Mn_m9 L05 B L1 L1 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+Mn_m10 L05 C L1 L1 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+
+Mn_m3 L1 A 0 0 NMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+Mn_m1 L1 Bbar L15 L15 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+Mn_m2 L1 C L15 L15 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+Mn_m4 L15 B 0 0 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+Mn_m5 L15 Cbar 0 0 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+* ---------------- PUN (pull-up):
+Mp_m19 VDD A left1 left1 PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+Mp_m15 left1 Bbar yl yl PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+Mp_m16 left1 B yr yr PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+Mp_m14 yl Cbar Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+Mp_m13 yr C Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+
+Mp_m20 VDD Abar right1 right1 PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+Mp_m17 right1 Bbar zl zl PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+Mp_m18 right1 B zr zr PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+Mp_m12 zl C Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+Mp_m11 zr Cbar Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+
+.ENDS PARITY3
+
+* ---------------------- Testbench ----------------------------------------
+Vdd VDD 0 DC 1.8
+
+* Test inputs (example: A=1.8, B=0, C=1.8)
+*Va A 0 DC 0
+*Vb B 0 DC 0
+*Vc C 0 DC 0
+
+Xpar A B C Y vdd 0 PARITY3
+
+*.op
+*.print op V(A) V(B) V(C) V(Y)
+*.print op V(Y) V(L05) V(L1) V(L15) V(left1) V(yl) V(yr) V(right1) V(zl) V(zr) V(Abar) V(Bbar) V(Cbar)
+
+*----------------------------------------------------------------------
+* DC truth-table validation (8 combinations)
+*----------------------------------------------------------------------
+*.op
+
+* Sweep A,B,C over {0,1.8} to verify logic correctness
+*.dc Va 0 1.8 1.8 Vb 0 1.8 1.8 Vc 0 1.8 1.8
+*.print dc V(A) V(B) V(C) V(Y)
+
+*----------------------------------------------------------------------
+* PULSE inputs for transient simulation
+*----------------------------------------------------------------------
+.options reltol=1e-3 abstol=1e-12 vntol=1e-6 maxord=2
+.options method=gear
+
+Va A 0 PULSE(0 1.8 4u 1f 1f 8u 16u)
+Vb B 0 PULSE(0 1.8 2u 1f 1f 4u 8u)
+Vc C 0 PULSE(0 1.8 1u 1f 1f 2u 4u)
+
+.tran 0 7u 0 1n
+.plot tran V(A) V(B) V(C) V(Y)
+
+
+
+*----------------------------------------------------------------------
+
+*----------------------------------------------------------------------
+* Propagation delay measurements
+*----------------------------------------------------------------------
+* Input A  Output Y delays
+.measure tran tplh_AY  TRIG V(A) VAL=0.9 RISE=1   TARG V(Y) VAL=0.9 RISE=1
+.measure tran tphl_AY  TRIG V(A) VAL=0.9 FALL=1   TARG V(Y) VAL=0.9 FALL=1
+
+* Input B  Output Y delays
+.measure tran tplh_BY  TRIG V(B) VAL=0.9 RISE=1   TARG V(Y) VAL=0.9 RISE=1
+.measure tran tphl_BY  TRIG V(B) VAL=0.9 FALL=1   TARG V(Y) VAL=0.9 FALL=1
+
+* Input C  Output Y delays
+.measure tran tplh_CY  TRIG V(C) VAL=0.9 RISE=1   TARG V(Y) VAL=0.9 RISE=1
+.measure tran tphl_CY  TRIG V(C) VAL=0.9 FALL=1   TARG V(Y) VAL=0.9 FALL=1
+
+*----------------------------------------------------------------------
+* Average Power
+*----------------------------------------------------------------------
+.measure tran AvgPower AVG V(VDD)*I(VDD)
+
+
+
+
+
+
+.end

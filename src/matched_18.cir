@@ -19,14 +19,14 @@ MPMOS out in vdd vdd PMOS0P18 w=4.05u l=0.18u As=2.187p Ad=2.187p ps=9.18u pd=9.
 *.dc Vin 0 1.8 0.005
 
 * Operating point (optional)
-*.op
+.op
 
 * Transient input (enable during transient test)
-Vin in 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+*Vin in 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
 
-.tran 0.2n 10n
+*.tran 0.2n 10n
 * Delay measurements (use only for transient)
-.measure tpHL TRIG V(in) VAL=0.9 RISE=1  TARG V(out) VAL=0.9 FALL=1
-.measure tpLH TRIG V(in) VAL=0.9 FALL=1  TARG V(out) VAL=0.9 RISE=1
+*.measure tpHL TRIG V(in) VAL=0.9 RISE=1  TARG V(out) VAL=0.9 FALL=1
+*.measure tpLH TRIG V(in) VAL=0.9 FALL=1  TARG V(out) VAL=0.9 RISE=1
 
 .end
