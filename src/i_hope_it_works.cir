@@ -75,14 +75,14 @@ Mp_m11 zr Cbar Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.8
 Vdd VDD 0 DC 1.8
 
 * Test inputs (example: A=1.8, B=0, C=1.8)
-Va A 0 DC 1.8
-Vb B 0 DC 1.8
-Vc C 0 DC 1.8
+*Va A 0 DC 1.8
+*Vb B 0 DC 1.8
+*Vc C 0 DC 1.8
 
 Xpar A B C Y VDD 0 PARITY3
 
-.op
-.print op V(A) V(B) V(C) V(Y)
+*.op
+*.print op V(A) V(B) V(C) V(Y)
 *.print op V(Y) V(L05) V(L1) V(L15) V(left1) V(yl) V(yr) V(right1) V(zl) V(zr) V(Abar) V(Bbar) V(Cbar)
 
 
@@ -103,7 +103,7 @@ Xpar A B C Y VDD 0 PARITY3
 *.end
 
 
-
+*Delay for Input A-------------
 *Va A 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
 *Vb B 0 0
 *Vc C 0 0
@@ -111,6 +111,26 @@ Xpar A B C Y VDD 0 PARITY3
 * Delay measurements (use only for transient)
 *.measure tpHL TRIG V(A) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
 *.measure tpLH TRIG V(A) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+
+*Delay for Input B-------------
+*Va A 0 0
+*Vb B 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+*Vc C 0 0
+*.tran 0.2n 10n
+* Delay measurements (use only for transient)
+*.measure tpHL TRIG V(B) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+*.measure tpLH TRIG V(B) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+
+*Delay for Input C-------------
+Va A 0 0
+Vb B 0 0
+Vc C 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+.tran 0.2n 10n
+* Delay measurements (use only for transient)
+.measure tpHL TRIG V(C) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+.measure tpLH TRIG V(C) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
 
 * -------- Average Power Measurement Using INTEG ---------
 

@@ -1,6 +1,6 @@
 LTspice 24.1.10 for Windows
 Circuit: C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\i_hope_it_works.cir
-Start Time: Fri Dec 12 15:05:24 2025
+Start Time: Fri Dec 12 15:28:21 2025
 solver = Normal
 Maximum thread count: 16
 tnom = 27
@@ -61,9 +61,11 @@ Instance "xpar:Mn_m4": Width narrower than recommended for a level 1 MOSFET.
 Instance "xpar:Mn_m5": Length shorter than recommended for a level 1 MOSFET.
 Instance "xpar:Mn_m5": Width narrower than recommended for a level 1 MOSFET.
 Direct Newton iteration for .op point succeeded.
-Total elapsed time: 0.143 seconds.
+Total elapsed time: 0.168 seconds.
 
 Files loaded:
 C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\i_hope_it_works.cir
 C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\MOSFET_models_0p5_0p18-3.inc
 
+tphl=5.32522393684e-09 FROM 3.00000002975e-10 TO 5.62522393981e-09
+tplh=-5.0136578285e-09 FROM 5.50000000132e-09 TO 4.86342172825e-10
