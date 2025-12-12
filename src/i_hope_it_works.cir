@@ -75,64 +75,50 @@ Mp_m11 zr Cbar Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.8
 Vdd VDD 0 DC 1.8
 
 * Test inputs (example: A=1.8, B=0, C=1.8)
-*Va A 0 DC 0
-*Vb B 0 DC 0
-*Vc C 0 DC 0
+Va A 0 DC 1.8
+Vb B 0 DC 1.8
+Vc C 0 DC 1.8
 
-Xpar A B C Y vdd 0 PARITY3
+Xpar A B C Y VDD 0 PARITY3
 
-*.op
-*.print op V(A) V(B) V(C) V(Y)
+.op
+.print op V(A) V(B) V(C) V(Y)
 *.print op V(Y) V(L05) V(L1) V(L15) V(left1) V(yl) V(yr) V(right1) V(zl) V(zr) V(Abar) V(Bbar) V(Cbar)
 
-*----------------------------------------------------------------------
-* DC truth-table validation (8 combinations)
-*----------------------------------------------------------------------
-*.op
 
-* Sweep A,B,C over {0,1.8} to verify logic correctness
-*.dc Va 0 1.8 1.8 Vb 0 1.8 1.8 Vc 0 1.8 1.8
-*.print dc V(A) V(B) V(C) V(Y)
 
 *----------------------------------------------------------------------
 * PULSE inputs for transient simulation
 *----------------------------------------------------------------------
-.options reltol=1e-3 abstol=1e-12 vntol=1e-6 maxord=2
-.options method=gear
+*.options reltol=1e-3 abstol=1e-12 vntol=1e-6 maxord=2
+*.options method=gear
 
-Va A 0 PULSE(0 1.8 4u 1f 1f 8u 16u)
-Vb B 0 PULSE(0 1.8 2u 1f 1f 4u 8u)
-Vc C 0 PULSE(0 1.8 1u 1f 1f 2u 4u)
+*Va A 0 pulse(0 1.8 4u 1f 1f 8u 16u)
+*Vb B 0 PULSE(0 1.8 2u 1f 1f 4u 8u)
+*Vc C 0 PULSE(0 1.8 1u 1f 1f 2u 4u)
 
-.tran 0 7u 0 1n
-.plot tran V(A) V(B) V(C) V(Y)
+*.tran 0 8u 0 1n
+*.plot tran V(A) V(B) V(C) V(Y)
 
-
-
-*----------------------------------------------------------------------
-
-*----------------------------------------------------------------------
-* Propagation delay measurements
-*----------------------------------------------------------------------
-* Input A  Output Y delays
-.measure tran tplh_AY  TRIG V(A) VAL=0.9 RISE=1   TARG V(Y) VAL=0.9 RISE=1
-.measure tran tphl_AY  TRIG V(A) VAL=0.9 FALL=1   TARG V(Y) VAL=0.9 FALL=1
-
-* Input B  Output Y delays
-.measure tran tplh_BY  TRIG V(B) VAL=0.9 RISE=1   TARG V(Y) VAL=0.9 RISE=1
-.measure tran tphl_BY  TRIG V(B) VAL=0.9 FALL=1   TARG V(Y) VAL=0.9 FALL=1
-
-* Input C  Output Y delays
-.measure tran tplh_CY  TRIG V(C) VAL=0.9 RISE=1   TARG V(Y) VAL=0.9 RISE=1
-.measure tran tphl_CY  TRIG V(C) VAL=0.9 FALL=1   TARG V(Y) VAL=0.9 FALL=1
-
-*----------------------------------------------------------------------
-* Average Power
-*----------------------------------------------------------------------
-.measure tran AvgPower AVG V(VDD)*I(VDD)
+*.end
 
 
 
+*Va A 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+*Vb B 0 0
+*Vc C 0 0
+*.tran 0.2n 10n
+* Delay measurements (use only for transient)
+*.measure tpHL TRIG V(A) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+*.measure tpLH TRIG V(A) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+* -------- Average Power Measurement Using INTEG ---------
+
+* instantaneous power = V(VDD) * I(Vdd)
+*.measure TRAN P_integral INTEG ( V(VDD)*I(Vdd) ) FROM=0 TO=10n
+
+* average power = integral / time window
+*.measure TRAN P_avg PARAM='P_integral / (10n - 0)'
 
 
 
