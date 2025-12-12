@@ -1,0 +1,201 @@
+* 4 to 1 MUX
+* Sizes: n = 5u, p = 10u (p = 2*n), L = 0.18u
+
+.include MOSFET_models_0p5_0p18-3.inc
+*****************************************************************************************
+*1n = MNMOS out in 0 0 NMOS0P18 w=0.9u l=0.18u As=0.486p Ad=0.486p ps=2.88u pd=2.88u
+*1p = MPMOS out in vdd vdd PMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+
+*2n = MNMOS out in 0 0 NMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+*4n = MNMOS out in 0 0 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+*3p = MPMOS out in vdd vdd PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+*****************************************************************************************
+
+* ---------- Inverter subckt (used to generate Abar,Bbar,Cbar) -------------
+* pins: IN OUT VDD GND
+.SUBCKT INV IN OUT VDD GND
+Mp_out OUT IN VDD VDD PMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+Mn_out OUT IN 0 0 NMOS0P18 w=0.9u l=0.18u As=0.486p Ad=0.486p ps=2.88u pd=2.88u
+*W = L * p(or n)
+.ENDS INV
+
+* ----------------- PARITY3 subcircuit (PUN + PDN) -------------------------
+* pins: A B C Y VDD GND
+.SUBCKT MUX4 S0 S1 I0 I1 I2 I3 Y VDD 0
+
+* generate complements
+XIS0 S0 S0bar VDD 0 INV
+XIS1 S1 S1bar VDD 0 INV
+XII0 I0 I0bar VDD 0 INV
+XII1 I1 I1bar VDD 0 INV
+XII2 I2 I2bar VDD 0 INV
+XII3 I3 I3bar VDD 0 INV
+
+* ---------------- PDN (pull-down) : output Y -> GND
+Mn_m8 Y S1 L1 L1 NMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+Mn_m6 Y S0 L05 L05 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+Mn_m7 Y I0bar L05 L05 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+Mn_m9 L05 S0bar L1 L1 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+Mn_m10 L05 I1bar L1 L1 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+
+Mn_m3 L1 S1bar 0 0 NMOS0P18 w=1.8u l=0.18u As=0.972p Ad=0.972p ps=4.68u pd=4.68u
+Mn_m1 L1 S0 L15 L15 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+Mn_m2 L1 I2bar L15 L15 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+Mn_m4 L15 S0bar 0 0 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+Mn_m5 L15 I3bar 0 0 NMOS0P18 w=3.6u l=0.18u As=1.944p Ad=1.944p ps=8.28u pd=8.28u
+
+* ---------------- PUN (pull-up):
+Mp_m19 VDD S1 left1 left1 PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+Mp_m15 left1 I0bar yl yl PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+Mp_m16 left1 S0bar yr yr PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+Mp_m14 yl S0 Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+Mp_m13 yr I1bar Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+
+Mp_m20 VDD S1bar right1 right1 PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+Mp_m17 right1 I2bar zl zl PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+Mp_m18 right1 I3bar zr zr PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+Mp_m12 zl S0 Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+Mp_m11 zr S0bar Y Y PMOS0P18 w=5.4u l=0.18u As=2.916p Ad=2.916p ps=11.88u pd=11.88u
+
+
+*Rload Y n1 1k
+*Cload n1 0 0.2p
+
+.ENDS MUX4
+
+* ---------------------- Testbench ----------------------------------------
+Vdd VDD 0 DC 1.8
+
+*Vs0 S0 0 DC 1
+*Vs1 S1 0 DC 1
+*Vi0 I0 0 DC 0
+*Vi1 I1 0 DC 0
+*Vi2 I2 0 DC 0
+*Vi3 I3 0 DC 1.8
+
+Xpar S0 S1 I0 I1 I2 I3 Y VDD 0 MUX4
+
+*.op
+*.print op V(S0) V(S1) V(I0) V(I1) V(I2) V(I3) V(Y)
+*.print op V(Y) V(L05) V(L1) V(L15) V(left1) V(yl) V(yr) V(right1) V(zl) V(zr) V(Abar) V(Bbar) V(Cbar)
+
+*----------------------------------------------------------------------
+* DC truth-table validation (8 combinations)
+*----------------------------------------------------------------------
+*.op
+
+
+
+
+*----------------------------------------------------------------------
+* PULSE inputs for transient simulation
+*----------------------------------------------------------------------
+*.options reltol=1e-3 abstol=1e-12 vntol=1e-6 maxord=2
+*.options method=gear
+
+*Vs0 S0 0 pulse(0 1.8 32u 1f 1f 64u 128u)
+*Vs1 S1 0 pulse(0 1.8 16u 1f 1f 32u 64u)
+*Vi0 I0 0 pulse(0 1.8 8u 1f 1f 16u 32u)
+*Vi1 I1 0 pulse(0 1.8 4u 1f 1f 8u 16u)
+*Vi2 I2 0 PULSE(0 1.8 2u 1f 1f 4u 8u)
+*Vi3 I3 0 PULSE(0 1.8 1u 1f 1f 2u 4u)
+
+*.tran 0 64u 0 1n
+*.plot tran V(S0) V(S1) V(I0) V(I1) V(I2) V(I3) V(Y)
+
+
+
+
+*Delay for Input S0-------------
+*Vs0 S0 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+*Vs1 S1 0 0
+*VI0 I0 0 0
+*Vi1 I1 0 1.8
+*Vi2 I2 0 0
+*Vi3 I3 0 0
+*.tran 0.2n 10n
+* Delay measurements (use only for transient)
+*.measure tpHL TRIG V(S0) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+*.measure tpLH TRIG V(S0) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+*Delay for Input S1-------------
+*Vs0 S0 0 0
+*Vs1 S1 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+*Vi0 I0 0 1.8
+*Vi1 I1 0 0
+*Vi2 I2 0 0
+*Vi3 I3 0 0
+*.tran 0.2n 10n
+* Delay measurements (use only for transient)
+*.measure tpHL TRIG V(S1) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+*.measure tpLH TRIG V(S1) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+*Delay for Input I0-------------
+*Vs0 S0 0 0
+*Vs1 S1 0 0
+*Vi0 I0 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+*Vi1 I1 0 0
+*Vi2 I2 0 0
+*Vi3 I3 0 0
+*.tran 0.2n 10n
+* Delay measurements (use only for transient)
+*.measure tpHL TRIG V(I0) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+*.measure tpLH TRIG V(I0) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+*Delay for Input I1-------------
+*Vs0 S0 0 1.8
+*Vs1 S1 0 0
+*Vi0 I0 0 0
+*Vi1 I1 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+*Vi2 I2 0 0
+*Vi3 I3 0 0
+*.tran 0.2n 10n
+* Delay measurements (use only for transient)
+*.measure tpHL TRIG V(I1) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+*.measure tpLH TRIG V(I1) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+
+*Delay for Input I2-------------
+*Vs0 S0 0 0
+*Vs1 S1 0 1.8
+*Vi0 I0 0 0
+*Vi1 I1 0 0
+*Vi2 I2 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+*Vi3 I3 0 0
+*.tran 0.2n 10n
+* Delay measurements (use only for transient)
+*.measure tpHL TRIG V(I2) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+*.measure tpLH TRIG V(I2) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+*Delay for Input I3-------------
+Vs0 S0 0 1.8
+Vs1 S1 0 1.8
+Vi0 I0 0 0
+Vi1 I1 0 0
+Vi2 I2 0 0
+Vi3 I3 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
+.tran 0.2n 10n
+* Delay measurements (use only for transient)
+.measure tpHL TRIG V(I3) VAL=0.9 RISE=1  TARG V(Y) VAL=0.9 FALL=1
+.measure tpLH TRIG V(I3) VAL=0.9 FALL=1  TARG V(Y) VAL=0.9 RISE=1
+
+* -------- Average Power Measurement Using INTEG ---------
+
+* instantaneous power = V(VDD) * I(Vdd)
+*.measure TRAN P_integral INTEG ( V(VDD)*I(Vdd) ) FROM=0 TO=10n
+
+* average power = integral / time window
+*.measure TRAN P_avg PARAM='P_integral / (10n - 0)'
+
+
+.end
