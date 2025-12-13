@@ -26,14 +26,7 @@ Vin in 0 pulse(0 1.8 0.2n 0.2n 0.2n 5n)
 
 .tran 0.2n 10n
 * Delay measurements (use only for transient)
-*.measure tpHL TRIG V(in) VAL=0.9 RISE=1  TARG V(out) VAL=0.9 FALL=1
-*.measure tpLH TRIG V(in) VAL=0.9 FALL=1  TARG V(out) VAL=0.9 RISE=1
-* -------- Average Power Measurement Using INTEG ---------
-
-* instantaneous power = V(VDD) * I(Vdd)
-.measure TRAN P_integral INTEG ( V(VDD)*I(Vdd) ) FROM=0 TO=10n
-
-* average power = integral / time window
-.measure TRAN P_avg PARAM='P_integral / (10n - 0)'
+.measure tpHL TRIG V(in) VAL=0.9 RISE=1  TARG V(out) VAL=0.9 FALL=1
+.measure tpLH TRIG V(in) VAL=0.9 FALL=1  TARG V(out) VAL=0.9 RISE=1
 
 .end
