@@ -89,13 +89,6 @@ Xpar S0 S1 I0 I1 I2 I3 Y VDD 0 MUX4
 *.print op V(S0) V(S1) V(I0) V(I1) V(I2) V(I3) V(Y)
 *.print op V(Y) V(L05) V(L1) V(L15) V(left1) V(yl) V(yr) V(right1) V(zl) V(zr) V(Abar) V(Bbar) V(Cbar)
 
-*----------------------------------------------------------------------
-* DC truth-table validation (8 combinations)
-*----------------------------------------------------------------------
-*.op
-
-
-
 
 *----------------------------------------------------------------------
 * PULSE inputs for transient simulation

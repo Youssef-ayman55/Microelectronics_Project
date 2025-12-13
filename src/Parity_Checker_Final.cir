@@ -1,6 +1,5 @@
 * 3-input parity static CMOS implementation
-* Y = A  B  C  => Y = 1 when odd number of inputs = 1
-* PDN implements Ybar (even parity) = 000 + 011 + 101 + 110
+* Y = A XOR B XOR C  => Y = 1 when odd number of inputs on
 * Sizes: n = 5u, p = 10u (p = 2*n), L = 0.18u
 
 .include MOSFET_models_0p5_0p18-3.inc
@@ -93,12 +92,12 @@ Xpar A B C Y VDD 0 PARITY3
 .options reltol=1e-3 abstol=1e-12 vntol=1e-6 maxord=2
 .options method=gear
 
-Va A 0 pulse(0 1.8 4u 1f 1f 8u 16u)
-Vb B 0 PULSE(0 1.8 2u 1f 1f 4u 8u)
-Vc C 0 PULSE(0 1.8 1u 1f 1f 2u 4u)
+*Va A 0 pulse(0 1.8 4u 1f 1f 8u 16u)
+*Vb B 0 PULSE(0 1.8 2u 1f 1f 4u 8u)
+*Vc C 0 PULSE(0 1.8 1u 1f 1f 2u 4u)
 
-.tran 0 8u 0 1n
-.plot tran V(A) V(B) V(C) V(Y)
+*.tran 0 8u 0 1n
+*.plot tran V(A) V(B) V(C) V(Y)
 
 *.end
 
