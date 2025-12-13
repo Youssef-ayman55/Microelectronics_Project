@@ -1,18 +1,25 @@
 LTspice 24.1.10 for Windows
-Circuit: C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\i_hope_it_works.cir
-Start Time: Sat Dec 13 18:08:20 2025
+Circuit: C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\I hope it works 2.cir
+Start Time: Sat Dec 13 18:16:58 2025
+Options: reltol=1e-3 abstol=1e-12 vntol=1e-6 maxord=2  method=gear
 solver = Normal
 Maximum thread count: 16
 tnom = 27
 temp = 27
-method = trap
+method = Gear
 Model "pmos0p18": Oxide thickness thinner than recommended for a level 1 MOSFET.
-Instance "xpar:xia:Mp_out": Length shorter than recommended for a level 1 MOSFET.
-Instance "xpar:xia:Mp_out": Width narrower than recommended for a level 1 MOSFET.
-Instance "xpar:xib:Mp_out": Length shorter than recommended for a level 1 MOSFET.
-Instance "xpar:xib:Mp_out": Width narrower than recommended for a level 1 MOSFET.
-Instance "xpar:xic:Mp_out": Length shorter than recommended for a level 1 MOSFET.
-Instance "xpar:xic:Mp_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xis0:Mp_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xis0:Mp_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xis1:Mp_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xis1:Mp_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xii0:Mp_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xii0:Mp_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xii1:Mp_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xii1:Mp_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xii2:Mp_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xii2:Mp_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xii3:Mp_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xii3:Mp_out": Width narrower than recommended for a level 1 MOSFET.
 Instance "xpar:Mp_m19": Length shorter than recommended for a level 1 MOSFET.
 Instance "xpar:Mp_m19": Width narrower than recommended for a level 1 MOSFET.
 Instance "xpar:Mp_m15": Length shorter than recommended for a level 1 MOSFET.
@@ -34,12 +41,18 @@ Instance "xpar:Mp_m12": Width narrower than recommended for a level 1 MOSFET.
 Instance "xpar:Mp_m11": Length shorter than recommended for a level 1 MOSFET.
 Instance "xpar:Mp_m11": Width narrower than recommended for a level 1 MOSFET.
 Model "nmos0p18": Oxide thickness thinner than recommended for a level 1 MOSFET.
-Instance "xpar:xia:Mn_out": Length shorter than recommended for a level 1 MOSFET.
-Instance "xpar:xia:Mn_out": Width narrower than recommended for a level 1 MOSFET.
-Instance "xpar:xib:Mn_out": Length shorter than recommended for a level 1 MOSFET.
-Instance "xpar:xib:Mn_out": Width narrower than recommended for a level 1 MOSFET.
-Instance "xpar:xic:Mn_out": Length shorter than recommended for a level 1 MOSFET.
-Instance "xpar:xic:Mn_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xis0:Mn_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xis0:Mn_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xis1:Mn_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xis1:Mn_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xii0:Mn_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xii0:Mn_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xii1:Mn_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xii1:Mn_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xii2:Mn_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xii2:Mn_out": Width narrower than recommended for a level 1 MOSFET.
+Instance "xpar:xii3:Mn_out": Length shorter than recommended for a level 1 MOSFET.
+Instance "xpar:xii3:Mn_out": Width narrower than recommended for a level 1 MOSFET.
 Instance "xpar:Mn_m8": Length shorter than recommended for a level 1 MOSFET.
 Instance "xpar:Mn_m8": Width narrower than recommended for a level 1 MOSFET.
 Instance "xpar:Mn_m6": Length shorter than recommended for a level 1 MOSFET.
@@ -61,11 +74,11 @@ Instance "xpar:Mn_m4": Width narrower than recommended for a level 1 MOSFET.
 Instance "xpar:Mn_m5": Length shorter than recommended for a level 1 MOSFET.
 Instance "xpar:Mn_m5": Width narrower than recommended for a level 1 MOSFET.
 Direct Newton iteration for .op point succeeded.
-Total elapsed time: 0.186 seconds.
+Total elapsed time: 2.585 seconds.
 
 Files loaded:
-C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\i_hope_it_works.cir
+C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\I hope it works 2.cir
 C:\Users\Ali\Documents\Ali\University\Fall 25\Microelec\project\Microelectronics_Project\src\MOSFET_models_0p5_0p18-3.inc
 
-p_integral: INTEG( V(VDD)*I(Vdd) )=-1.39431144834e-12 FROM 0 TO 8e-06
-p_avg: 'P_integral / (8u - 0)'=-1.74288931043e-07
+p_integral: INTEG( V(VDD)*I(Vdd) )=-4.88968679593e-12 FROM 0 TO 6.4e-05
+p_avg: 'P_integral / (64u - 0)'=-7.64013561865e-08
